@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    text-align: start;
+    gap: 16px;
+}
+.avt {
+    width: 64px;
+}   
+
+.title {
+    font-size: 14px;
+    margin: 4px;
+    color: #27272A;
+}
+
+.description {
+    font-size: 12px;
+    color: #D4D4D8;
+    margin: 4px;
+}

@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    gap: 16px;
+}
+
+.body {
+    flex: 1;
+    padding: 24px;
+}
+
+.background {
+    height: 800px;
+
+}
+
+.name {
+    color: #B991FF;
+    font-size: 40px;
+    margin: 0;
+    text-align: center;
+}
+
+.title {
+    font-size: 36px;
+    color: #333333;
+    margin: 0;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.description {
+    font-size: 18px;
+    color: #404040;
+    text-align: center  ;
+}
+
+.login {
+    color: #B991FF;
+    cursor: pointer;
+}
