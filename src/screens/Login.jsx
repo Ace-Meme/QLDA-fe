@@ -1,10 +1,19 @@
 import image from '../assets/image 2.png'
 import { useNavigate } from 'react-router'
+import { baseURL } from '../utils/Link';
+import axios from 'axios'
 
 export function Login(){
     const navigate = useNavigate();
     const signIn = () => {
-        navigate('/')
+        let o = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        }
+        axios.post(baseURL + '/login', o).then((value) => {
+            console.log(value.data);
+            navigate('/');
+        }).catch(console.error)
     }
     return(
         <div style={{display: 'flex', flexDirection: 'row'}}>
