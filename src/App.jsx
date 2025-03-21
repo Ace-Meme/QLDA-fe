@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import { RootPath } from './screens/Root'
-
+import "./App.css";
+import { RootPath } from "./screens/Root";
+import { Provider } from "react-redux";
+import store from "./redux/store.js";
 function App() {
-  return(
-    <RootPath />
-  )
+    return (
+        <Provider store={store}>
+            <RootPath />
+        </Provider>
+    );
 }
 
-export default App
+export default App;

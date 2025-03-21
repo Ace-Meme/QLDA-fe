@@ -1,24 +1,18 @@
-import React from "react";
+import { DatePicker, Form, Input, Select } from "antd";
 import styles from "./style.module.css";
-import { Form, Input, Select } from "antd";
-function PersonalInformation(props) {
+import { useDispatch, useSelector } from "react-redux";
+import { updateName, updateGender, updateEmail, updatePhone, updateDob } from "../../../../redux/SignUpSlice";
+import { useEffect } from "react";
+function PersonalInformation() {
     const { Option } = Select;
     const [form] = Form.useForm();
-    const prefixSelector = (
-        <Form.Item
-            name="prefix"
-            noStyle
-        >
-            <Select
-                style={{
-                    width: 70,
-                }}
-            >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        </Form.Item>
-    );
+    const dispatch = useDispatch();
+    const signUpInfo = useSelector((state) => state.signUp);
+
+    useEffect(() => {
+        console.log("Sign Up Information: ", signUpInfo);
+    });
+
     return (
         <div className={styles.container}>
             <Form
@@ -36,19 +30,30 @@ function PersonalInformation(props) {
                         },
                     ]}
                 >
-                    <Input placeholder="Nguyen Quoc Nhut" />
+                    <Input
+                        onChange={(e) => dispatch(updateName(e.target.value))}
+                        placeholder="Nguyen Quoc Nhut"
+                    />
                 </Form.Item>
                 <Form.Item
-                    name="national_id"
-                    label="National ID number"
+                    name="gender"
+                    label="Gender"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your national ID number!",
+                            message: "Please select your render!",
                         },
                     ]}
                 >
-                    <Input placeholder="097" />
+                    <Select
+                        placeholder="Select gender"
+                        allowClear
+                        onChange={(value) => dispatch(updateGender(value))}
+                    >
+                        <Option value="MALE">Male</Option>
+                        <Option value="FEMALE">Female</Option>
+                        <Option value="OTHER">Other</Option>
+                    </Select>
                 </Form.Item>
                 <Form.Item
                     name="email"
@@ -64,7 +69,7 @@ function PersonalInformation(props) {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input onChange={(e) => dispatch(updateEmail(e.target.value))} />
                 </Form.Item>
                 <Form.Item
                     name="phone"
@@ -77,10 +82,25 @@ function PersonalInformation(props) {
                     ]}
                 >
                     <Input
-                        addonBefore={prefixSelector}
+                        onChange={(e) => dispatch(updatePhone(e.target.value))}
                         style={{
                             width: "100%",
                         }}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="dob"
+                    label="Birthday"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please select your day of birth!",
+                        },
+                    ]}
+                >
+                    <DatePicker
+                        onChange={(date, dateString) => dispatch(updateDob(Number(dateString)))}
+                        picker="year"
                     />
                 </Form.Item>
             </Form>

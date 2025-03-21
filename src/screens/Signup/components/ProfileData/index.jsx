@@ -1,23 +1,11 @@
 import styles from "./style.module.css";
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { updatePassword, updateUsername } from "../../../../redux/SignUpSlice";
 function ProfileData() {
-    const {Option} = Select;
     const [form] = Form.useForm();
-    const prefixSelector = (
-        <Form.Item
-            name="prefix"
-            noStyle
-        >
-            <Select
-                style={{
-                    width: 70,
-                }}
-            >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        </Form.Item>
-    );
+    const dispatch = useDispatch();
     return (
         <div className={styles.container}>
             <Form
@@ -26,59 +14,35 @@ function ProfileData() {
                 layout="vertical"
             >
                 <Form.Item
-                    name="fullnameofparent"
-                    label="Full name of parent"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your fullname of parent!",
-                        },
-                    ]}
+                    name="username"
+                    rules={[{ required: true, message: "Please input your username!" }]}
                 >
-                    <Input placeholder="Nguyen Quoc A" />
-                </Form.Item>
-                <Form.Item
-                    name="dob_parent"
-                    label="Date of parent's birth"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your date of parent's birth",
-                        },
-                    ]}
-                >
-                    <Input placeholder="22/02/2024" />
+                    <Input
+                        prefix={<UserOutlined />}
+                        placeholder="Username"
+                        onChange={(e) => dispatch(updateUsername(e.target.value))}
+                    />
                 </Form.Item>
 
                 <Form.Item
-                    name="parent_address"
-                    label="Parent's permanent resident"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your parent's permanent resident!",
-                        },
-                    ]}
-                >
-                    <Input placeholder="Di An, Binh Duong" />
-                </Form.Item>
-                <Form.Item
-                    name="parent_phone"
-                    label="Parent's phone number"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please input your parent's phone number!",
-                        },
-                    ]}
+                    name="password"
+                    rules={[{ required: true, message: "Please input your password!" }]}
                 >
                     <Input
-                        addonBefore={prefixSelector}
-                        style={{
-                            width: "100%",
-                        }}
+                        prefix={<LockOutlined />}
+                        placeholder="Password"
+                        onChange={(e) => dispatch(updatePassword(e.target.value))}
                     />
                 </Form.Item>
+                {/* <Form.Item
+                    name="confirmPassword"
+                    rules={[{ required: true, message: "Please confirm your password!" }]}
+                >
+                    <Input
+                        prefix={<LockOutlined />}
+                        placeholder="Confirm password"
+                    />
+                </Form.Item> */}
             </Form>
         </div>
     );

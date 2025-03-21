@@ -1,22 +1,23 @@
-import styles from "./style.module.css";
-import img from "../../assets/image 2.png";
 import { Button, message, Steps, theme } from "antd";
-import { useState } from "react";
-import UserType from "./components/UserType";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import img from "../../assets/image 2.png";
 import PersonalInformation from "./components/PersonalInformation";
 import ProfileData from "./components/ProfileData";
 import Uploads from "./components/Uploads";
+import styles from "./style.module.css";
+import { signupUser } from "../../redux/SignUpSlice";
 const steps = [
-    {
-        title: "Account Type",
-        content: <UserType />,
-    },
+    // {
+    //     title: "Account Type",
+    //     content: <UserType />,
+    // },
     {
         title: "Personal Infomation",
         content: <PersonalInformation />,
     },
     {
-        title: "Profile Data",
+        title: "Account Data",
         content: <ProfileData />,
     },
     {
@@ -27,7 +28,12 @@ const steps = [
 
 function Signup() {
     const { token } = theme.useToken();
+    const dispatch = useDispatch();
     const [current, setCurrent] = useState(0);
+    const userInfo = useSelector((state) => state.signUp);
+    useEffect(() => {
+        console.log("User info: ", userInfo);
+    }, [userInfo]);
     const next = () => {
         setCurrent(current + 1);
     };
@@ -71,7 +77,7 @@ function Signup() {
                     {current === steps.length - 1 && (
                         <Button
                             type="primary"
-                            onClick={() => message.success("Processing complete!")}
+                            onClick={() => dispatch(signupUser(userInfo))}
                         >
                             Done
                         </Button>
@@ -86,7 +92,13 @@ function Signup() {
                     )}
                 </div>
                 <p>
-                    Already have an account? <a className={styles.login}>Login here</a>
+                    Already have an account?{" "}
+                    <a
+                        href="/login"
+                        className={styles.login}
+                    >
+                        Login here
+                    </a>
                 </p>
             </div>
             <img
