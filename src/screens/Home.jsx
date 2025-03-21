@@ -14,7 +14,10 @@ export function Home(){
             <img src={reactLogo} className="logo react" alt="React logo" />
             </a>
         </div>
-        <h1>Vite + React</h1>
+        <h1 id="result">Navigating to this page means success.</h1>
+        <h1 class="text-3xl font-bold underline">
+            Hello world!
+        </h1>
         <div className="card">
             <button onClick={() => setCount((count) => count + 1)}>
             count is {count}

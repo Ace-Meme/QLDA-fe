@@ -1,6 +1,20 @@
 import image from '../assets/image 2.png'
+import { useNavigate } from 'react-router'
+import { baseURL } from '../utils/Link';
+import axios from 'axios'
 
 export function Login(){
+    const navigate = useNavigate();
+    const signIn = () => {
+        let o = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        }
+        axios.post(baseURL + '/login', o).then((value) => {
+            console.log(value.data);
+            navigate('/');
+        }).catch(console.error)
+    }
     return(
         <div style={{display: 'flex', flexDirection: 'row'}}>
             <div style={{flexGrow: '6', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
@@ -23,7 +37,7 @@ export function Login(){
                             Forgot your password?
                         </span>
                     </div>
-                    <button style={{backgroundColor: 'blue', color: 'white'}}>Log in</button>
+                    <button style={{backgroundColor: 'blue', color: 'white'}} onClick={signIn}>Log in</button>
                     <div>Don't have an account? <a>Sign up here</a></div>
                 </div>
             </div>
