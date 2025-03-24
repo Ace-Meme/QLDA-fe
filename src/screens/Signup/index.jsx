@@ -1,12 +1,13 @@
 import { Button, message, Steps, theme } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import img from "../../assets/image 2.png";
+import { signupUser } from "../../redux/SignUpSlice";
 import PersonalInformation from "./components/PersonalInformation";
 import ProfileData from "./components/ProfileData";
 import Uploads from "./components/Uploads";
 import styles from "./style.module.css";
-import { signupUser } from "../../redux/SignUpSlice";
 const steps = [
     // {
     //     title: "Account Type",
@@ -27,8 +28,18 @@ const steps = [
 ];
 
 function Signup() {
-    const { token } = theme.useToken();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleSignUp = () => {
+        message.success("Sign up successfully!");
+
+        dispatch(signupUser(userInfo));
+
+        setTimeout(() => {
+            navigate("/login");
+        }, 1000);
+    };
+    const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);
     const userInfo = useSelector((state) => state.signUp);
     useEffect(() => {
@@ -77,11 +88,12 @@ function Signup() {
                     {current === steps.length - 1 && (
                         <Button
                             type="primary"
-                            onClick={() => dispatch(signupUser(userInfo))}
+                            onClick={() => handleSignUp()}
                         >
                             Done
                         </Button>
                     )}
+
                     {current > 0 && (
                         <Button
                             style={{ margin: "0 8px" }}
