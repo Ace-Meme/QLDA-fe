@@ -2,18 +2,28 @@ import image from '../assets/image 2.png'
 import { useNavigate } from 'react-router'
 import { baseURL } from '../utils/Link';
 import axios from 'axios'
+import { useState } from 'react';
 
 export function Login(){
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
     const signIn = () => {
+        setLoading(true);
         let o = {
             username: document.getElementById("username").value,
             password: document.getElementById("password").value
         }
         axios.post(baseURL + '/login', o).then((value) => {
             console.log(value.data);
+            setLoading(false);
+            setError(false);
             navigate('/');
-        }).catch(console.error)
+        }).catch((err) => {
+            console.log(err);
+            setLoading(false);
+            setError(true);
+        })
     }
     return(
         <div style={{display: 'flex', flexDirection: 'row'}}>
@@ -38,6 +48,13 @@ export function Login(){
                         </span>
                     </div>
                     <button style={{backgroundColor: 'blue', color: 'white'}} onClick={signIn}>Log in</button>
+                    
+                    {
+                        loading && <span>Loading...</span>
+                    }
+                    {
+                        error && <p style={{color: 'red'}}>Invalid username or password</p>
+                    }
                     <div>Don't have an account? <a>Sign up here</a></div>
                 </div>
             </div>

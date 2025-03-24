@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getCourse } from "../utils/data";
+import { Accordion, AccordionItem } from '@szhsin/react-accordion';
+import "./style.css"
+import { useLocation, useNavigate } from "react-router";
+import axios from "axios";
+import { baseURL } from "../utils/Link";
 
 export function CourseDetail() {
+    const {state} = useLocation();
     const [button, setButton] = useState('Information');
     const course = getCourse();
+    console.log(state);
+    useEffect(() => {
+        axios.get(baseURL + `/courses/${state}`).then((res) => {
+            console.log(res.data);
+        })
+    }, [])
     return (
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'start', backgroundColor: '#FAF1E6', padding: 20 }}>
             <div style={{ overflow: 'auto', width: 800, height: 650, backgroundColor: 'white', borderRadius: 10, textAlign: 'left', padding: 30, borderRadius: 10 }}>
@@ -25,25 +37,34 @@ export function CourseDetail() {
                 {
                     button === 'Content' && (
                         <div>
-                            <h2>Chapters</h2>
+                            <h2 style={{marginBottom: 10, fontSize: 18, marginTop: 20}}>All Chapters</h2>
                             {course.chapters.map((chapter, index) => {
                                 return (
-                                    <div key={index}>
-                                        <h3>{chapter.name}</h3>
-                                        {chapter.content.map((content, index) => {
-                                            return (
-                                                <div key={index}>
+                                    <Accordion key={index} style={{width: '100%'}}>
+                                        <AccordionItem header={
+                                            <div style={{fontSize: 16, width: '100%'}}>Chapter {index}: {chapter.name}</div>
+                                        } className="item" 
+                                        buttonProps={{
+                                            className: ({ isEnter }) =>
+                                              `itemBtn ${isEnter && "itemBtnExpanded"}`,
+                                          }}>
+                                        <div style={{display: 'flex', gap: 10, flexDirection: 'column', padding: 20}}>
+                                            {chapter.content.map((content, index) => {
+                                                return (
+                                                    <>
                                                     {content.type === 'video' ? (
                                                         <video width="320" height="240" controls>
                                                             <source src={content.url} type="video/mp4" />
                                                         </video>
                                                     ) : (
-                                                        <a href={content.url}>Document</a>
+                                                        <a href={content.url} style={{textDecoration: 'underline'}}>Document</a>
                                                     )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
+                                                    </>
+                                                );
+                                            })}
+                                        </div>
+                                        </AccordionItem>
+                                    </Accordion>     
                                 );
                             })}
                         </div>

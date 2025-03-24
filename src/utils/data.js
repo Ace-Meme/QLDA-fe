@@ -1,3 +1,25 @@
+export let courseslist = [
+    {
+        name: 'ReactJS and a super long title',
+        price: '500$',
+        chapters_quantity: 10
+    },
+    {
+        name: 'NodeJS',
+        price: '400$',
+        chapters_quantity: 8
+    },
+    {
+        name: 'MongoDB',
+        price: '300$',
+        chapters_quantity: 6
+    }
+]
+
+export const getCoursesList = () => {  
+    return courseslist;
+}
+
 export let course = {
     name: 'ReactJS',
     duration: '3 months',

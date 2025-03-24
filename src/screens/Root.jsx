@@ -4,6 +4,7 @@ import { Home } from "./Home";
 import Signup from "../screens/Signup/index";
 import { CourseDetail } from "./CourseDetail";
 import "./style.css";
+import { CoursesList } from "./CoursesList";
 export function RootPath() {
     return (
         <Routes>
@@ -24,6 +25,7 @@ export function RootPath() {
                     element={<Signup />}
                 />
                 <Route path="coursedetail" element={<CourseDetail />} />
+                <Route path="courses" element={<CoursesList />} />
             </Route>
         </Routes>
     );
@@ -38,6 +40,7 @@ export function RootNavigationBar() {
                 </Link>
                 <Link className="navbut" to={"/login"}>Log in</Link>
                 <Link className="navbut" to={"/signup"}>Sign Up</Link>
+                <Link className="navbut" to={"/courses"}>Courses</Link>
                 <Link className="navbut" to={"/coursedetail"}>Course Detail</Link>
             </div>
             <div style={{flexGrow: 1}}>
