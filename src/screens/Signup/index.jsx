@@ -1,4 +1,4 @@
-import { Button, message, Steps, theme } from "antd";
+import { Button, Steps, theme } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -31,7 +31,7 @@ function Signup() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleSignUp = () => {
-        message.success("Sign up successfully!");
+        alert("Sign Up successfully!");
 
         dispatch(signupUser(userInfo));
 
