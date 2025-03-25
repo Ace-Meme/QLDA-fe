@@ -34,8 +34,22 @@ export function RootPath() {
 export function RootNavigationBar() {
     return (
         <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "row" }}>
-            <div style={{ width: "200px", height: "100vh", backgroundColor: "#7462d1", display: "flex", flexDirection: "column", alignItems: "stretch", paddingTop: "20px", gap: "5px" }}>
-                <Link className="navbut" to={"/"}>
+            <div
+                style={{
+                    width: "200px",
+                    height: "100vh",
+                    backgroundColor: "#7462d1",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    paddingTop: "20px",
+                    gap: "5px",
+                }}
+            >
+                <Link
+                    className="navbut"
+                    to={"/"}
+                >
                     Home
                 </Link>
                 <Link className="navbut" to={"/login"}>Log in</Link>
@@ -43,8 +57,8 @@ export function RootNavigationBar() {
                 <Link className="navbut" to={"/courses"}>Courses</Link>
                 <Link className="navbut" to={"/coursedetail"}>Course Detail</Link>
             </div>
-            <div style={{flexGrow: 1}}>
-                <div
+            <div style={{ flexGrow: 1 }}>
+                {/* <div
                     style={{
                         display: "flex",
                         flexDirection: "row",
@@ -56,10 +70,9 @@ export function RootNavigationBar() {
                     <Link to={"/login"}>Log in</Link>
                     <Link to={"/signup"}>Sign Up</Link>
                     <Link to={"/coursedetail"}>Course Detail</Link>
-                </div>
+                </div> */}
                 <Outlet />
             </div>
-            
         </div>
     );
 }
