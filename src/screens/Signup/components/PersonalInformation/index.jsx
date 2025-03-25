@@ -3,6 +3,7 @@ import styles from "./style.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateName, updateGender, updateEmail, updatePhone, updateDob } from "../../../../redux/SignUpSlice";
 import { useEffect } from "react";
+
 function PersonalInformation() {
     const { Option } = Select;
     const [form] = Form.useForm();
@@ -12,6 +13,20 @@ function PersonalInformation() {
     useEffect(() => {
         console.log("Sign Up Information: ", signUpInfo);
     });
+
+    const validateFullName = (rule, value) => {
+        if (!value || value.length < 5 || !/^[a-zA-ZÀ-ỹ\s]+$/.test(value)) {
+            return Promise.reject("Full name must be at least 5 characters long and contain only letters.");
+        }
+        return Promise.resolve();
+    };
+
+    const validatePhoneNumber = (rule, value) => {
+        if (!value || !/^0\d{9}$/.test(value)) {
+            return Promise.reject("Phone number must be a sequence of 10 digits starting with 0.");
+        }
+        return Promise.resolve();
+    };
 
     return (
         <div className={styles.container}>
@@ -28,6 +43,9 @@ function PersonalInformation() {
                             required: true,
                             message: "Please input your fullname!",
                         },
+                        {
+                            validator: validateFullName,
+                        },
                     ]}
                 >
                     <Input
@@ -41,7 +59,7 @@ function PersonalInformation() {
                     rules={[
                         {
                             required: true,
-                            message: "Please select your render!",
+                            message: "Please select your gender!",
                         },
                     ]}
                 >
@@ -78,6 +96,9 @@ function PersonalInformation() {
                         {
                             required: true,
                             message: "Please input your phone number!",
+                        },
+                        {
+                            validator: validatePhoneNumber,
                         },
                     ]}
                 >
