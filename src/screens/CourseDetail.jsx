@@ -38,7 +38,7 @@ export function CourseDetail() {
                 }}
             >
                 <img
-                    src={"https://th.bing.com/th/id/OIF.4cgH705KVyGTBYgsh5cnVQ?rs=1&pid=ImgDetMain"}
+                    src="https://th.bing.com/th/id/OIP.2NiZfQzNy6BKq7hUHycxbAHaE8?rs=1&pid=ImgDetMain"
                     alt={course.name}
                     style={{ width: 700, height: 400, objectFit: "cover", borderRadius: 10 }}
                 />
