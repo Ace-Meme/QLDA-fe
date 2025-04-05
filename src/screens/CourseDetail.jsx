@@ -9,11 +9,12 @@ import { baseURL } from "../utils/Link";
 export function CourseDetail() {
     const {state} = useLocation();
     const [button, setButton] = useState('Information');
-    const course = getCourse();
+    const [course, setCourse] = useState(getCourse());
     console.log(state);
     useEffect(() => {
         axios.get(baseURL + `/courses/${state}`).then((res) => {
             console.log(res.data);
+            setCourse(res.data);
         })
     }, [])
     return (
@@ -44,7 +45,7 @@ export function CourseDetail() {
                 />
                 <h4 style={{ fontWeight: "bold", fontSize: "20px", marginTop: 10 }}>{course.name}</h4>
                 <p>
-                    By: <span style={{ fontWeight: "bold" }}>{course.teacher}</span>
+                    By: <span style={{ fontWeight: "bold" }}>{course.teacherName}</span>
                 </p>
                 <p>Duration: {course.duration}</p>
                 <div
@@ -73,7 +74,7 @@ export function CourseDetail() {
                 {
                     button === 'Information' &&  (
                         <div>
-                            <p>Introduction: {course.introduction}</p>
+                            <p>{course.description}</p>
                         </div>
                     )
                 }
@@ -81,27 +82,30 @@ export function CourseDetail() {
                     button === 'Content' && (
                         <div>
                             <h2 style={{marginBottom: 10, fontSize: 18, marginTop: 20}}>All Chapters</h2>
-                            {course.chapters.map((chapter, index) => {
+                            {course.weeks.map((week, index) => {
                                 return (
                                     <Accordion key={index} style={{width: '100%'}}>
                                         <AccordionItem header={
-                                            <div style={{fontSize: 16, width: '100%'}}>Chapter {index}: {chapter.name}</div>
+                                            <div style={{fontSize: 16, width: '100%'}}>Week {week.weekNumber}: {week.title}</div>
                                         } className="item" 
                                         buttonProps={{
                                             className: ({ isEnter }) =>
                                               `itemBtn ${isEnter && "itemBtnExpanded"}`,
                                           }}>
                                         <div style={{display: 'flex', gap: 10, flexDirection: 'column', padding: 20}}>
-                                            {chapter.content.map((content, index) => {
+                                            {week.description}
+                                            {week.content.map((content, index) => {
                                                 return (
                                                     <>
-                                                    {content.type === 'video' ? (
+                                                    {/* {content.type === 'video' ? (
                                                         <video width="320" height="240" controls>
                                                             <source src={content.url} type="video/mp4" />
                                                         </video>
                                                     ) : (
                                                         <a href={content.url} style={{textDecoration: 'underline'}}>Document</a>
-                                                    )}
+                                                    )} */}
+                                                    <p>{week.title}</p>
+                                                    <p>{week.content}</p>
                                                     </>
                                                 );
                                             })}
@@ -154,7 +158,7 @@ export function CourseDetail() {
                 <ul style={{ listStyleType: "circle", listStylePosition: "inside", padding: 0 }}>
                     <li>Video</li>
                     <li>Document</li>
-                    <li>{course.chapters.length} chapters</li>
+                    <li>{course.weeks.length} weeks</li>
                 </ul>
             </div>
         </div>
