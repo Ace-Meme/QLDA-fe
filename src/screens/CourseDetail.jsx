@@ -11,12 +11,35 @@ export function CourseDetail() {
     const [button, setButton] = useState('Information');
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [modalLoading, setModalLoading] = useState(false);
+    const [noti, setNoti] = useState(null);
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setNoti(null);
+    }
     const handleShow = () => setShow(true);
 
-    console.log(state);
+    const token = sessionStorage.getItem('token');
+    const buy = () => {
+        setModalLoading(true);
+        axios.post(baseURL + '/enrollments', {
+            courseId: course.id,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((res) => {
+            console.log(res.data);
+            setNoti("Successfully enrolled in the course");
+        }).catch((err) => {
+            console.log(err);
+            setNoti("There was an error enrolling in the course, or you are already enrolled");
+        }).finally(() => {
+            setModalLoading(false);
+        })
+    }
     useEffect(() => {
         setLoading(true);
         axios.get(baseURL + `/courses/${state}`).then((res) => {
@@ -183,7 +206,13 @@ export function CourseDetail() {
                         <h4 style={{fontWeight: 'bold', fontSize: 20}}>{course.name}</h4>
                         <p style={{color: 'gray'}}>By {course.teacherName}</p>
                         <p>Price: {course.price}</p>
-                        <button style={{backgroundColor: '#4C6FFF', color: 'white', padding: 10, borderRadius: 10, width: '100%'}}>Buy Now?</button>
+                        {
+                            noti && <p style={{color: 'red'}}>{noti}</p>
+                        }
+                        {
+                            modalLoading && <span>Loading...</span>
+                        }
+                        <button onClick={buy} style={{backgroundColor: '#4C6FFF', color: 'white', padding: 10, borderRadius: 10, width: '100%'}}>Buy Now?</button>
                     </div>
                 </Modal.Body>
             </Modal>

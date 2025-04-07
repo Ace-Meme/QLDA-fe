@@ -8,6 +8,9 @@ export function Login(){
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const saveInformation = (data) => {
+        sessionStorage.setItem('token', data.token);
+    }
     const signIn = () => {
         setLoading(true);
         let o = {
@@ -16,6 +19,7 @@ export function Login(){
         }
         axios.post(baseURL + '/login', o).then((value) => {
             console.log(value.data);
+            saveInformation(value.data);
             setLoading(false);
             setError(false);
             navigate('/');

@@ -6,15 +6,20 @@ import axios from "axios";
 import { baseURL } from "../utils/Link";
 import { useNavigate } from "react-router";
 
-export function CoursesList(){
+export function CoursesEnroll(){
     const [courses, setCourses] = useState([]);
     const [keyword, setKeyword] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         setLoading(true);
-        axios.get(baseURL + '/courses').then((res) => {
-            setCourses(res.data.content);
+        axios.get(baseURL + '/enrollments/my-courses', {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`
+            }
+        }).then((res) => {
+            console.log(res.data);
+            setCourses(res.data.data);
             setLoading(false);
         })
     }, [])
@@ -35,7 +40,7 @@ export function CoursesList(){
     }
     return(
         <div style={{textAlign: 'start', padding: '20px', backgroundColor: '#F5F7F9'}}>
-            <p style={{fontWeight: 'bold', color: '#646cff', fontSize: 20, marginBottom: '20px'}}>Discover new courses</p>
+            <p style={{fontWeight: 'bold', color: '#646cff', fontSize: 20, marginBottom: '20px'}}>Courses you have enrolled</p>
             <div style={{display: 'flex', padding: '5px', gap: 10, alignItems: 'center', marginBottom: '10px'}}>
                 <input id="search" placeholder="Key word..." style={{width: 200, padding: '10px', borderRadius: 10, backgroundColor: 'white'}} />
                 <button style={{color: 'whitesmoke', backgroundColor: 'green'}} onClick={() => setKeyword(document.getElementById("search").value)}>Search</button>
