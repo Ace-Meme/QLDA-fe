@@ -5,6 +5,9 @@ import Signup from "../screens/Signup/index";
 import { CourseDetail } from "./CourseDetail";
 import "./style.css";
 import { CoursesList } from "./CoursesList";
+import CreateQuestion from "./CreateQuestion";
+import QuizScreen from "./QuizScreen";
+
 export function RootPath() {
     return (
         <Routes>
@@ -23,6 +26,14 @@ export function RootPath() {
                 <Route
                     path="signup"
                     element={<Signup />}
+                />
+                <Route
+                    path="create-question"
+                    element={<CreateQuestion />}
+                />
+                <Route
+                    path="quiz"
+                    element={<QuizScreen />}
                 />
                 <Route path="coursedetail" element={<CourseDetail />} />
                 <Route path="courses" element={<CoursesList />} />
@@ -56,6 +67,18 @@ export function RootNavigationBar() {
                 <Link className="navbut" to={"/signup"}>Sign Up</Link>
                 <Link className="navbut" to={"/courses"}>Courses</Link>
                 <Link className="navbut" to={"/coursedetail"}>Course Detail</Link>
+                <Link
+                    className="navbut"
+                    to={"/create-question"}
+                >
+                    Create Questions
+                </Link>
+                <Link
+                    className="navbut"
+                    to={"/quiz"}
+                >
+                    Take Quiz
+                </Link>
             </div>
             <div style={{ flexGrow: 1 }}>
                 {/* <div
