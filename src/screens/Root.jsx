@@ -9,6 +9,7 @@ import CreateQuestion from "./CreateQuestion";
 import QuizScreen from "./QuizScreen";
 
 import { CoursesEnroll } from "./CoursesEnroll";
+import ChapterDetail from "./ChapterDetail";
 export function RootPath() {
     return (
         <Routes>
@@ -27,6 +28,10 @@ export function RootPath() {
                 <Route
                     path="signup"
                     element={<Signup />}
+                />
+                <Route
+                    path="/chapter/:chapterId"
+                    element={<ChapterDetail />}
                 />
                 <Route
                     path="create-question"
