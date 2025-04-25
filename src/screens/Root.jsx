@@ -1,44 +1,45 @@
-import { Link, Outlet, Route, Routes } from "react-router";
-import { Login } from "./Login";
-import { Home } from "./Home";
+import {Link, Outlet, Route, Routes} from "react-router";
+import {Login} from "./Login";
+import {Home} from "./Home";
 import Signup from "../screens/Signup/index";
-import { CourseDetail } from "./CourseDetail";
+import {CourseDetail} from "./CourseDetail";
 import "./style.css";
-import { CoursesList } from "./CoursesList";
-import CreateQuestion from "./CreateQuestion";
-import QuizScreen from "./QuizScreen";
+import {CoursesList} from "./CoursesList";
+import QuizManagement from "./QuizManagement";
+import QuizAttemptScreen from "./QuizAttemptScreen";
 
-import { CoursesEnroll } from "./CoursesEnroll";
+import {CoursesEnroll} from "./CoursesEnroll";
+
 export function RootPath() {
     return (
         <Routes>
             <Route
                 path="/"
-                element={<RootNavigationBar />}
+                element={<RootNavigationBar/>}
             >
                 <Route
                     index
-                    element={<Home />}
+                    element={<Home/>}
                 />
                 <Route
                     path="login"
-                    element={<Login />}
+                    element={<Login/>}
                 />
                 <Route
                     path="signup"
-                    element={<Signup />}
+                    element={<Signup/>}
                 />
                 <Route
-                    path="create-question"
-                    element={<CreateQuestion />}
+                    path="quiz-attempt/:learningItemId"
+                    element={<QuizAttemptScreen/>}
                 />
                 <Route
-                    path="quiz"
-                    element={<QuizScreen />}
+                    path="quiz-management"
+                    element={<QuizManagement/>}
                 />
-                <Route path="coursedetail" element={<CourseDetail />} />
-                <Route path="courses" element={<CoursesList />} />
-                <Route path="coursesenroll" element={<CoursesEnroll />} />
+                <Route path="coursedetail" element={<CourseDetail/>}/>
+                <Route path="courses" element={<CoursesList/>}/>
+                <Route path="coursesenroll" element={<CoursesEnroll/>}/>
             </Route>
         </Routes>
     );
@@ -46,7 +47,7 @@ export function RootPath() {
 
 export function RootNavigationBar() {
     return (
-        <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "row" }}>
+        <div style={{width: "100vw", height: "100vh", display: "flex", flexDirection: "row"}}>
             <div
                 style={{
                     width: "200px",
@@ -70,20 +71,22 @@ export function RootNavigationBar() {
                 <Link className="navbut" to={"/courses"}>Discover</Link>
                 <Link className="navbut" to={"/coursesenroll"}>Course Enroll</Link>
                 <Link className="navbut" to={"/coursedetail"}>Course Detail</Link>
-                <Link
-                    className="navbut"
-                    to={"/create-question"}
-                >
-                    Create Questions
-                </Link>
+
                 <Link
                     className="navbut"
                     to={"/quiz"}
                 >
                     Take Quiz
                 </Link>
+                <Link
+                    className="navbut"
+                    to={"/quiz-management"}
+                >
+                    Quiz management
+                </Link>
+
             </div>
-            <div style={{ flexGrow: 1 }}>
+            <div style={{flexGrow: 1}}>
                 {/* <div
                     style={{
                         display: "flex",
@@ -97,7 +100,7 @@ export function RootNavigationBar() {
                     <Link to={"/signup"}>Sign Up</Link>
                     <Link to={"/coursedetail"}>Course Detail</Link>
                 </div> */}
-                <Outlet />
+                <Outlet/>
             </div>
         </div>
     );
