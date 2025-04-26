@@ -6,7 +6,7 @@ import {CourseDetail} from "./CourseDetail";
 import "./style.css";
 import {CoursesList} from "./CoursesList";
 import QuizManagement from "./QuizManagement";
-import QuizAttemptScreen from "./QuizAttemptScreen";
+import QuizAttemptScreen from "./QuizAttempt/QuizAttemptScreen";
 
 import {CoursesEnroll} from "./CoursesEnroll";
 

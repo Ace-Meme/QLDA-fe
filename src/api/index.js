@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
+import { baseURL } from '../utils/Link';
+import { getTokenData } from '../utils/auth';
 
 export const API = axios.create({
     baseURL: "http://localhost:8080",
@@ -36,13 +38,16 @@ export const signUpUser = async (params) => {
 // =============== Quiz Taking API (QuizController) ===============
 
 /**
- * Start a new quiz attempt for a specific learning item
- * @param {number} learningItemId - ID of the learning item (quiz) to attempt
- * @returns {Promise<Object>} Quiz attempt data
+ * Start a new quiz attempt
+ * @param {number} learningItemId - ID of the learning item
+ * @returns {Promise<Object>} Quiz attempt details
  */
 export const startQuizAttempt = async (learningItemId) => {
     try {
-        const response = await API.post("/api/quizzes/attempt", { learningItemId });
+        const response = await API.post('/api/quizzes/attempt', {
+            learningItemId: learningItemId,
+            questionCount: 10 // Default to 10 questions
+        });
         return response.data;
     } catch (err) {
         console.error(err);
@@ -82,13 +87,13 @@ export const completeQuizAttempt = async (quizAttemptId) => {
 };
 
 /**
- * Get quiz results for a student
- * @param {number} studentId - ID of the student
- * @returns {Promise<Object>} List of quiz results for the student
+ * Get quiz results for a course
+ * @param {number} courseId - ID of the course
+ * @returns {Promise<Object>} List of quiz results for the course
  */
-export const getStudentQuizResults = async (studentId) => {
+export const getCourseQuizResults = async (courseId) => {
     try {
-        const response = await API.get(`/api/quizzes/results/student/${studentId}`);
+        const response = await API.get(`/api/quizzes/results/course/${courseId}`);
         return response.data;
     } catch (err) {
         console.error(err);
@@ -97,13 +102,45 @@ export const getStudentQuizResults = async (studentId) => {
 };
 
 /**
- * Get quiz results for a course
- * @param {number} courseId - ID of the course
- * @returns {Promise<Object>} List of quiz results for the course
+ * Get active quiz attempt for a learning item
+ * @param {number} learningItemId - ID of the learning item
+ * @returns {Promise<Object>} Active quiz attempt if exists
  */
-export const getCourseQuizResults = async (courseId) => {
+export const getActiveQuizAttempt = async (learningItemId) => {
     try {
-        const response = await API.get(`/api/quizzes/results/course/${courseId}`);
+        const response = await API.get(`/api/quizzes/attempt/active/${learningItemId}`);
+        if (response.data.status === 'SUCCESS') {
+            return response.data.data;
+        }
+        return null;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
+/**
+ * Get quiz attempt details
+ * @param {number} quizAttemptId - ID of the quiz attempt
+ * @returns {Promise<Object>} Quiz attempt details
+ */
+export const getQuizAttempt = async (quizAttemptId) => {
+    try {
+        const response = await API.get(`/api/quizzes/attempt/${quizAttemptId}`);
+        return response.data;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
+/**
+ * Get all quiz attempts for the current user
+ * @returns {Promise<Object>} List of quiz attempts
+ */
+export const getCurrentUserQuizAttempts = async () => {
+    try {
+        const response = await API.get('/api/quizzes/attempt/current');
         return response.data;
     } catch (err) {
         console.error(err);
@@ -404,6 +441,20 @@ export const deleteQuestion = async (questionId) => {
         return response.data;
     } catch (err) {
         console.error('Error in deleteQuestion API call:', err);
+        throw err;
+    }
+};
+
+/**
+ * Get current user information
+ * @returns {Promise<Object>} Current user data
+ */
+export const getCurrentUser = async () => {
+    try {
+        const response = await API.get('/api/users/me');
+        return response.data.data;
+    } catch (err) {
+        console.error(err);
         throw err;
     }
 };
