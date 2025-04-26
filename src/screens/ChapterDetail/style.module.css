@@ -1,0 +1,24 @@
+.container {
+
+}
+
+.header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 16px;
+    gap: 16px;
+}
+
+.info-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px;
+    text-align: left;
+
+}
+.title {
+    color:#334155;
+    font-size: 14px;
+}

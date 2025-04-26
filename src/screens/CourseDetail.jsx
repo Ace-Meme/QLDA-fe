@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { Accordion, Modal, Form } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 import "./style.css";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import { baseURL } from "../utils/Link";
+import { Button, InputNumber } from "antd";
+import { Form, Input, Modal } from "antd";
+import { FaRegEdit } from "react-icons/fa";
 
 export function CourseDetail() {
     const { state } = useLocation();
@@ -13,12 +16,16 @@ export function CourseDetail() {
     const [modalLoading, setModalLoading] = useState(false);
     const [noti, setNoti] = useState(null);
 
+    const [showNewWeekModal, setShowNewWeekModal] = useState(false);
+    const [form] = Form.useForm(); // Sử dụng form instance của Ant Design
+
     const [showBuyModal, setShowBuyModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
 
     const [editCourseData, setEditCourseData] = useState({});
 
     const token = sessionStorage.getItem("token");
+    const navigate = useNavigate();
 
     const handleBuy = () => {
         setShowBuyModal(true);
@@ -95,6 +102,46 @@ export function CourseDetail() {
         });
     }, []);
 
+    const handleNewWeekSubmit = () => {
+        form.validateFields() // Validate các trường
+            .then((values) => {
+                const newWeekData = {
+                    ...values,
+                    courseId: course?.id || 0,
+                };
+
+                axios
+                    .post(`${baseURL}/weeks`, newWeekData, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((res) => {
+                        message.success("New week created successfully!");
+                        setCourse((prev) => ({
+                            ...prev,
+                            weeks: [...prev.weeks, res.data],
+                        }));
+                        setShowNewWeekModal(false);
+                        form.resetFields(); // Reset form sau khi thành công
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        message.error("Failed to create a new week.");
+                    });
+            })
+            .catch((info) => {
+                console.error("Validate Failed:", info);
+            });
+    };
+
+    const toChapterDetail = (chapNumber, chapName, description, lessons, chapterId) => {
+        
+        navigate(`/chapter/${chapNumber}`, {
+            state: { chapNumber, chapName, description, lessons, chapterId },
+        });
+    };
+
     if (loading) return <div>Loading...</div>;
 
     return (
@@ -154,6 +201,12 @@ export function CourseDetail() {
                 {button === "Content" && (
                     <div>
                         <h2 style={{ fontSize: 18, marginTop: 20 }}>All Chapters</h2>
+                        <Button
+                            type="primary"
+                            onClick={() => setShowNewWeekModal(true)}
+                        >
+                            New chapter
+                        </Button>
                         <Accordion alwaysOpen>
                             {course.weeks.map((week, index) => (
                                 <Accordion.Item
@@ -161,9 +214,22 @@ export function CourseDetail() {
                                     key={index}
                                 >
                                     <Accordion.Header>
-                                        Week {week.weekNumber} - {week.title}
+                                        Chapter {week.weekNumber} - {week.title}
                                     </Accordion.Header>
                                     <Accordion.Body>
+                                        <FaRegEdit
+                                            size={20}
+                                            style={{ cursor: "pointer", margin: "12px" }}
+                                            onClick={() =>
+                                                toChapterDetail(
+                                                    week.weekNumber,
+                                                    week.title,
+                                                    week.description,
+                                                    week.learningItems,
+                                                    week.id,
+                                                )
+                                            }
+                                        />
                                         <p>{week.description}</p>
                                         <ul>
                                             {week.learningItems.map((item, idx) => (
@@ -228,6 +294,51 @@ export function CourseDetail() {
                     <li>Total {course.totalDurationMinutes} minutes</li>
                 </ul>
             </div>
+
+            <Modal
+                title="Create New Week"
+                visible={showNewWeekModal}
+                onCancel={() => setShowNewWeekModal(false)}
+                onOk={handleNewWeekSubmit}
+                okText="Create"
+                cancelText="Cancel"
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                >
+                    <Form.Item
+                        label="Title"
+                        name="title"
+                        rules={[
+                            { required: true, message: "Please enter the title" },
+                            { max: 100, message: "Title must be less than 100 characters" },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Description"
+                        name="description"
+                        rules={[
+                            { required: true, message: "Please enter the description" },
+                            { max: 500, message: "Description must be less than 500 characters" },
+                        ]}
+                    >
+                        <Input.TextArea rows={3} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Week Number"
+                        name="weekNumber"
+                        rules={[
+                            { required: true, message: "Please enter the week number" },
+                            { type: "number", min: 1, message: "Week number must be greater than 0" },
+                        ]}
+                    >
+                        <InputNumber />
+                    </Form.Item>
+                </Form>
+            </Modal>
 
             {/* Buy Modal */}
             <Modal
